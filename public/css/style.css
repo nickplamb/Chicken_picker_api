@@ -1,0 +1,19 @@
+thead {
+  border: 1px solid black;
+  background-color: grey;
+}
+th,
+td {
+  border: 1px solid grey;
+  padding: 10px;
+  max-width: 400px;
+}
+.tab {
+  margin-left: 20px;
+}
+.tab2 {
+  margin-left: 40px;
+}
+.tab3 {
+  margin-left: 60px;
+}

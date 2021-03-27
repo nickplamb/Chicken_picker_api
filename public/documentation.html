@@ -5,12 +5,118 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
   <title>Movie API Documentation</title>
 </head>
 
 <body>
   <h1>Movie API Documentation</h1>
   <p>This will be an api for calling movie data.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Purpose</th>
+        <th>URL</th>
+        <th>HTTP Method</th>
+        <th>Request body data format</th>
+        <th>Response body data format</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Get all Chicken Breeds</td>
+        <td>/breeds</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>A JSON object holding data about all chicken breeds</td>
+      </tr>
+      <tr>
+        <td>Get Chicken Breed by name</td>
+        <td>/breeds/[name]</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>A JSON object holding data about a single breed containing an ID, Name, APA Class, Egg Color, and
+          Description. <br>
+          {<br>
+          <span class="tab">id:1,</span><br>
+          <span class="tab">name:Ameraucana Black,</span><br>
+          <span class="tab">apa class:AOCCL(All Other Combs Clean Leg),</span><br>
+          <span class="tab">egg:</span><br>
+          <span class="tab2">{</span><br>
+          <span class="tab3">color:blue/green</span><br>
+          <span class="tab3">size:small</span><br>
+          <span class="tab3">production:good</span><br>
+          <span class="tab2">},</span><br>
+          <span class="tab">Comb type:pea</span><br>
+          }
+
+        </td>
+      </tr>
+      <tr>
+        <td>Get all breeds by egg color</td>
+        <td>/breeds/eggs/[color]</td>
+        <td>GET</td>
+        <td>none</td>
+        <td>A JSON object holding all breeds with specified color eggs</td>
+      </tr>
+      <tr>
+        <td>Get all breeds by APA Class</td>
+        <td>/breeds/class/[class]</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>A JSON object holding all breeds with specified class</td>
+      </tr>
+      <tr>
+        <td>Allow a new user to register</td>
+        <td>/users</td>
+        <td>POST</td>
+        <td>A JSON object holding the new users Username, password, and email. Optional: name.<br>
+          {<br>
+          <span class="tab">username:JaneDoe42,</span><br>
+          <span class="tab">password:small toaster horse leaf2, </span><br>
+          <span class="tab">email:janedoe@janedoe.com</span><br>
+          }
+        </td>
+        <td>A JSON object holding the new users information</td>
+      </tr>
+      <tr>
+        <td>Allow user to update their user info</td>
+        <td>/users/[username]</td>
+        <td>PUT</td>
+        <td>A JSON object holding user data to be changed</td>
+        <td>A JSON object holding updated user information</td>
+      </tr>
+      <tr>
+        <td>Allow user to view all breeds on their favorites list</td>
+        <td>/users/[username]/favorites</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>A JSON object holding users list of favorite breeds.</td>
+      </tr>
+      <tr>
+        <td>Allow user to add breeds to their favorites list</td>
+        <td>/users/[username]/favorites/[breed]</td>
+        <td>POST</td>
+        <td>None</td>
+        <td>A text message indicating that the breed was added to their favorites list successfully.</td>
+      </tr>
+      <tr>
+        <td>Allow users to remove breeds from their favorites list</td>
+        <td>/users/[username]/favorites/[breed]</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>A text message indicating that the breed was deleted from their favorites list.</td>
+      </tr>
+      <tr>
+        <td>Allow user to delete their account</td>
+        <td>/users/[username]</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>A text message indicating that the users account has been deleted.</td>
+      </tr>
+    </tbody>
+  </table>
 </body>
 
 </html>
