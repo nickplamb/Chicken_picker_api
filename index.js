@@ -33,18 +33,19 @@ app.use((err, req, res, next) => {
 
 // Routes
 // Breed Routes
-app.get('/breeds', (req, res) => breedRoutes.breeds(req, res));
-app.get('/breeds/:breed', (req, res) => breedRoutes.breedByName(req, res));
-app.get('/breeds/eggs/:color', (req, res) => breedRoutes.eggColor(req, res));
-app.get('/breeds/class/:class', (req, res) => breedRoutes.apaClass(req, res));
+// app.get('/breeds', (req, res) => breedRoutes.breeds(req, res));
+app.get('/breeds', breedRoutes.breeds);
+app.get('/breeds/:breed', breedRoutes.breedByName);
+app.get('/breeds/eggs/:color', breedRoutes.eggColor);
+app.get('/breeds/class/:class', breedRoutes.apaClass);
 
 // User Routes
-app.post('/users', (req, res) => userRoutes.addNewUser(req, res));
-app.put('/users/:username', (req, res) => userRoutes.updateUser(req, res));
-app.get('/users/:username/favorites', (req, res) => userRoutes.showFavorites(req, res));
-app.post('/users/:username/favorites/:breed', (req, res) => userRoutes.addFavorite(req, res));
-app.delete('/users/:username/favorites/:breed', (req, res) => userRoutes.removeFavorite(req, res));
-app.delete('/users/:username', (req, res) => userRoutes.deleteUser(req, res));
+app.post('/users', userRoutes.addNewUser);
+app.put('/users/:username', userRoutes.updateUser);
+app.get('/users/:username/favorites', userRoutes.showFavorites);
+app.post('/users/:username/favorites/:breed', userRoutes.addFavorite);
+app.delete('/users/:username/favorites/:breed', userRoutes.removeFavorite);
+app.delete('/users/:username', userRoutes.deleteUser);
 
 // Start the server
 app.listen(8080, () => {
