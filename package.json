@@ -1,25 +1,29 @@
 {
-  "name": "movie_api",
+  "name": "Chickens_api",
   "version": "0.1.0",
-  "description": "An api for movie fans",
+  "description": "An api for fans of Chickens",
   "main": "index.js",
   "scripts": {
+    "jsdoc":"jsdoc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nickplamb/Movie_api.git"
+    "url": "git+https://github.com/nickplamb/Chickens_api.git"
   },
   "author": "Nicholas Lamb",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nickplamb/Movie_api/issues"
+    "url": "https://github.com/nickplamb/Chickens_api/issues"
   },
-  "homepage": "https://github.com/nickplamb/Movie_api#readme",
+  "homepage": "https://github.com/nickplamb/Chickens_api#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "morgan": "^1.10.0",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "jsdoc": "~3.6.6"
   }
 }
