@@ -1,6 +1,13 @@
 const uuid = require('uuid');
+const mongoose = require('mongoose');
+const Models = require('../models.js');
 
-let users = [];
+const User = Models.User;
+
+mongoose.connect('mongodb://localhost:27017/chickendb', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 // const express = require('express');
 // const app = express()
 // userRoutes.addNewUser

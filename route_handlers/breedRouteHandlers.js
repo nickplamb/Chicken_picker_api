@@ -1,71 +1,7 @@
-let chickenBreeds = [
-  {
-    id: 1,
-    name: 'Ameraucana Black',
-    apaclass: 'AOCCL',
-    egg: {
-      color: 'blue/green',
-      size: 'small',
-      production: 'good',
-    },
-    Combtype: 'pea',
-  },
-  {
-    id: 2,
-    name: 'Austrolorp Black',
-    apaclass: 'English',
-    egg: {
-      color: 'brown',
-      size: 'large',
-      production: 'good',
-    },
-    Combtype: 'single',
-  },
-  {
-    id: 3,
-    name: 'Easter Egger',
-    apaclass: 'AOCCL',
-    egg: {
-      color: 'blue/green',
-      size: 'med/lg',
-      production: 'good',
-    },
-    Combtype: 'pea',
-  },
-  {
-    id: 4,
-    name: 'Cream Legbar',
-    apaclass: 'Not recognized',
-    egg: {
-      color: 'blue',
-      size: 'med/lg',
-      production: 'good',
-    },
-    Combtype: 'single',
-  },
-  {
-    id: 5,
-    name: 'Wyandotte Silver Laced',
-    apaclass: 'American',
-    egg: {
-      color: 'brown',
-      size: 'large',
-      production: 'good',
-    },
-    Combtype: 'rose',
-  },
-  {
-    id: 6,
-    name: 'Welsummer',
-    apaclass: 'Continental',
-    egg: {
-      color: 'Brown',
-      size: 'medium',
-      production: 'good',
-    },
-    Combtype: 'single',
-  },
-];
+const mongoose = require('mongoose');
+const Models = require('../models.js');
+
+const Breed = Models.Breed;
 
 // breedRoutes.breeds,
 // breedRoutes.breedByName
