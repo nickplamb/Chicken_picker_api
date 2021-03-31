@@ -11,13 +11,6 @@ mongoose.connect('mongodb://localhost:27017/chickendb', {
   useUnifiedTopology: true,
 });
 
-// app.post('/users', userRoutes.addNewUser);
-// app.put('/users/:username', userRoutes.updateUser);
-// app.get('/users/:username/favorites', userRoutes.showFavorites);
-// app.post('/users/:username/favorites/:breed', userRoutes.addFavorite);
-// app.delete('/users/:username/favorites/:breed', userRoutes.removeFavorite);
-// app.delete('/users/:username', userRoutes.deleteUser);
-
 // FOR DEV ONLY!
 // RETURNS ALL USERS
 router.get('/', (req, res) => {
@@ -32,41 +25,56 @@ router.get('/', (req, res) => {
 });
 // FOR DEV ONLY!
 
+// Create new user
 router.post('/', (req, res) => {
+  // Check for existing user by the username in the body
   User.findOne({ username: req.body.username }).then((user) => {
-    if (!user) {
-      User.create({
-        username: req.body.username,
-        password: req.body.password,
-        email: req.body.email,
-        birthday: req.body.birthday,
-      })
-        .then((user) => {
-          return res.status(201).json(user);
-        })
-        .catch((err) => {
-          return res.status(500).send(`Error: ${err}`);
-        });
-    } else {
-      return res.status(400).send(`${req.body.username} already exists.`);
+    // if user already exist return with response.
+    if (user) {
+      return res.status(409).send(`${req.body.username} already exists.`);
     }
+
+    // otherwise, create the new user.
+    User.create({
+      username: req.body.username,
+      password: req.body.password,
+      email: req.body.email,
+      birthday: req.body.birthday,
+    })
+      .then((user) => {
+        return res.status(201).json(user);
+      })
+      .catch((err) => {
+        return res.status(500).send(`Error: ${err}`);
+      });
   });
 });
 
+// Update existing user
 router.put('/:username', (req, res) => {
   let reqUser = req.body;
+
+  //Find user by username
   User.findOne({ username: req.params.username })
     .then((user) => {
+      // If user found, Abort.
+      if (!user) {
+        return res.status(404).send(`The user was not found. Please try again.`);
+      }
+
+      // Only update properties passed
       Object.keys(reqUser).forEach((key) => {
         user[key] = reqUser[key];
       });
+
+      // save the user
       user
         .save()
         .then((updatedUser) => {
           return res.status(200).json(updatedUser);
         })
         .catch((err) => {
-          return res.status(404).send(`The user was not found. Error: ${err}`);
+          return res.status(500).send(`Error: ${err}`);
         });
     })
     .catch((err) => {
@@ -74,34 +82,51 @@ router.put('/:username', (req, res) => {
     });
 });
 
+// Get list of users favorite breeds
 router.get('/:username/favorites', (req, res) => {
   User.findOne({ username: req.params.username })
     .populate('favoriteBreeds')
     .then((user) => {
+      // User not found, Abort.
+      if (!user) {
+        return res.status(404).send('The user was not found. Please try again.');
+      }
+
       return res.status(200).json(user.favoriteBreeds);
+    })
+    .catch((err) => {
+      return res.status(500).send(`Error: ${err}`);
     });
 });
 
+// Add breed to users favorite list
 router.post('/:username/favorites/:breedName', (req, res) => {
+  // Find the User
   User.findOne({ username: req.params.username })
     .then((user) => {
+      // User doesn't exist. Abort.
       if (!user) {
         return res.status(404).send('User not found. Please try again.');
       }
+      // Find the breed.
       Breed.findOne({ breed: req.params.breedName })
         .then((breed) => {
+          // Breed not found. Abort.
           if (!breed) {
             return res.status(404).send('Breed not found. Please try again.');
           }
+          // Check that the breed is not already in the favorites list.
           if (user.favoriteBreeds.includes(breed._id)) {
             return res.status(409).send(`${breed.breed} is already one of your favorites.`);
           }
+          // Add breed to users favorite list
           user.favoriteBreeds.push(breed._id);
           user
             .save()
             .then((savedUser) => {
+              // Populate breed info to be sent back.
               User.populate(savedUser, [{ path: 'favoriteBreeds' }], (err, user) => {
-                return res.status(201).json(user.favoriteBreeds);
+                return res.status(200).json(user.favoriteBreeds);
               });
             })
             .catch((err) => {
@@ -109,28 +134,34 @@ router.post('/:username/favorites/:breedName', (req, res) => {
             });
         })
         .catch((err) => {
-          return res.status(404).send(`Error: ${err}`);
+          return res.status(500).send(`Error: ${err}`);
         });
     })
     .catch((err) => {
-      return res.status(404).send(`Error: ${err}`);
+      return res.status(500).send(`Error: ${err}`);
     });
 });
 
+// Remove a breed from users favorite list
 router.delete('/:username/favorites/:breedId', (req, res) => {
+  // Find the user.
   User.findOne({ username: req.params.username }).then((user) => {
+    // User doesn't exist. Abort.
     if (!user) {
       return res.status(404).send('User not found. Please try again.');
     }
+    // Breed is not in favorite list.
     if (!user.favoriteBreeds.includes(req.params.breedId)) {
       return res.status(404).send(`This breed was not one of your favorites.`);
     }
+    // Remove the breed from favorite list.
     user.favoriteBreeds.pull(req.params.breedId);
     user
       .save()
       .then((savedUser) => {
+        // Populate breed info to be sent back.
         User.populate(savedUser, [{ path: 'favoriteBreeds' }], (err, user) => {
-          return res.status(201).json(user.favoriteBreeds);
+          return res.status(200).json(user.favoriteBreeds);
         });
       })
       .catch((err) => {
@@ -139,13 +170,17 @@ router.delete('/:username/favorites/:breedId', (req, res) => {
   });
 });
 
+// Delete the User account.
 router.delete('/:username', (req, res) => {
+  // Find the user.
   User.findOneAndDelete({ username: req.params.username })
     .then((user) => {
+      // User not found. Abort.
       if (!user) {
         return res.status(404).send(`${req.params.username} was not found.`);
       }
-      return res.send(`${req.params.username} has been deleted.`);
+      // User has been deleted
+      return res.status(204).send(`${req.params.username} has been deleted.`);
     })
     .catch((err) => {
       return res.status(500).send(`Error: ${err}`);
