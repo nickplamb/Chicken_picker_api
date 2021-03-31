@@ -82,32 +82,62 @@ router.get('/:username/favorites', (req, res) => {
     });
 });
 
-router.post('/:username/favorites/:breed', (req, res) => {
-  // add logic to prevent duplicates.
+router.post('/:username/favorites/:breedName', (req, res) => {
   User.findOne({ username: req.params.username })
     .then((user) => {
-      Breed.findOne({ breed: req.params.breed })
+      if (!user) {
+        return res.status(404).send('User not found. Please try again.');
+      }
+      Breed.findOne({ breed: req.params.breedName })
         .then((breed) => {
+          if (!breed) {
+            return res.status(404).send('Breed not found. Please try again.');
+          }
           if (user.favoriteBreeds.includes(breed._id)) {
             return res.status(409).send(`${breed.breed} is already one of your favorites.`);
           }
           user.favoriteBreeds.push(breed._id);
-          user.save();
-          return res.status(201).json(user.favoriteBreeds);
+          user
+            .save()
+            .then((savedUser) => {
+              User.populate(savedUser, [{ path: 'favoriteBreeds' }], (err, user) => {
+                return res.status(201).json(user.favoriteBreeds);
+              });
+            })
+            .catch((err) => {
+              return res.status(500).send(`Couldn't save. Something went wrong. ${err}`);
+            });
         })
         .catch((err) => {
-          return res.status(404).send(`Breed not found. ${err}`);
+          return res.status(404).send(`Error: ${err}`);
         });
     })
     .catch((err) => {
-      return res.status(404).send(`User not found. ${err}`);
+      return res.status(404).send(`Error: ${err}`);
     });
-  // return res.send(`${req.params.breed} has been added to ${req.params.username}'s favorites.`);
 });
 
-router.removeFavorite = (req, res) => {
-  return res.send(`${req.params.breed} has been removed from ${req.params.username}'s favorites.`);
-};
+router.delete('/:username/favorites/:breedId', (req, res) => {
+  User.findOne({ username: req.params.username }).then((user) => {
+    if (!user) {
+      return res.status(404).send('User not found. Please try again.');
+    }
+    if (!user.favoriteBreeds.includes(req.params.breedId)) {
+      return res.status(404).send(`This breed was not one of your favorites.`);
+    }
+    user.favoriteBreeds.pull(req.params.breedId);
+    user
+      .save()
+      .then((savedUser) => {
+        User.populate(savedUser, [{ path: 'favoriteBreeds' }], (err, user) => {
+          return res.status(201).json(user.favoriteBreeds);
+        });
+      })
+      .catch((err) => {
+        return res.status(404).send(`Error: ${err}`);
+      });
+  });
+});
 
 router.deleteUser = (req, res) => {
   return res.send(`The user ${req.params.username} has been deleted.`);
