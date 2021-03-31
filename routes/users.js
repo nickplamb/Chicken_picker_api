@@ -139,8 +139,17 @@ router.delete('/:username/favorites/:breedId', (req, res) => {
   });
 });
 
-router.deleteUser = (req, res) => {
-  return res.send(`The user ${req.params.username} has been deleted.`);
-};
+router.delete('/:username', (req, res) => {
+  User.findOneAndDelete({ username: req.params.username })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send(`${req.params.username} was not found.`);
+      }
+      return res.send(`${req.params.username} has been deleted.`);
+    })
+    .catch((err) => {
+      return res.status(500).send(`Error: ${err}`);
+    });
+});
 
 module.exports = router;
