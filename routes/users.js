@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const Models = require('../models/User.js');
-const { route } = require('./breeds.js');
+const { Breed } = require('../models/Breed.js');
+const { User } = require('../models/User.js');
 
-const User = Models.User;
+// const User = Models.User;
 
 mongoose.connect('mongodb://localhost:27017/chickendb', {
   useNewUrlParser: true,
@@ -74,13 +74,36 @@ router.put('/:username', (req, res) => {
     });
 });
 
-router.showFavorites = (req, res) => {
-  return res.send(`Here are ${req.params.username}'s favorite breeds.`);
-};
+router.get('/:username/favorites', (req, res) => {
+  User.findOne({ username: req.params.username })
+    .populate('favoriteBreeds')
+    .then((user) => {
+      return res.status(200).json(user.favoriteBreeds);
+    });
+});
 
-router.addFavorite = (req, res) => {
-  return res.send(`${req.params.breed} has been added to ${req.params.username}'s favorites.`);
-};
+router.post('/:username/favorites/:breed', (req, res) => {
+  // add logic to prevent duplicates.
+  User.findOne({ username: req.params.username })
+    .then((user) => {
+      Breed.findOne({ breed: req.params.breed })
+        .then((breed) => {
+          if (user.favoriteBreeds.includes(breed._id)) {
+            return res.status(409).send(`${breed.breed} is already one of your favorites.`);
+          }
+          user.favoriteBreeds.push(breed._id);
+          user.save();
+          return res.status(201).json(user.favoriteBreeds);
+        })
+        .catch((err) => {
+          return res.status(404).send(`Breed not found. ${err}`);
+        });
+    })
+    .catch((err) => {
+      return res.status(404).send(`User not found. ${err}`);
+    });
+  // return res.send(`${req.params.breed} has been added to ${req.params.username}'s favorites.`);
+});
 
 router.removeFavorite = (req, res) => {
   return res.send(`${req.params.breed} has been removed from ${req.params.username}'s favorites.`);
