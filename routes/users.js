@@ -180,7 +180,7 @@ router.delete('/:username', (req, res) => {
         return res.status(404).send(`${req.params.username} was not found.`);
       }
       // User has been deleted
-      return res.status(204).send(`${req.params.username} has been deleted.`);
+      return res.status(200).send(`${req.params.username} has been deleted.`);
     })
     .catch((err) => {
       return res.status(500).send(`Error: ${err}`);
