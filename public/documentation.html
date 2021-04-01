@@ -6,12 +6,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/style.css">
-  <title>Movie API Documentation</title>
+  <title>Chicken API Documentation</title>
 </head>
 
 <body>
-  <h1>Movie API Documentation</h1>
-  <p>This will be an api for calling movie data.</p>
+  <h1>Chicken API Documentation</h1>
+  <p>This will be an api for calling Chicken data.</p>
 
   <table>
     <thead>
@@ -36,19 +36,28 @@
         <td>/breeds/[name]</td>
         <td>GET</td>
         <td>None</td>
-        <td>A JSON object holding data about a single breed containing an ID, Name, APA Class, Egg Color, and
-          Description. <br>
+        <td>A JSON object holding data about a single breed containing an ID, Name, APA Class, Egg Color, Description,
+          etc. <br>
           {<br>
           <span class="tab">id:1,</span><br>
-          <span class="tab">name:Ameraucana Black,</span><br>
-          <span class="tab">apa class:AOCCL(All Other Combs Clean Leg),</span><br>
-          <span class="tab">egg:</span><br>
+          <span class="tab">breed:Ameraucana Black,</span><br>
+          <span class="tab">description:description,</span><br>
+          <span class="tab">eggColor:blue/green,</span><br>
+          <span class="tab">eggSize:small,</span><br>
+          <span class="tab">apaClass:AOCCL(All Other Combs Clean Leg),</span><br>
+          <span class="tab">purpose:eggs,</span><br>
+          <span class="tab">eggProduction:good,</span><br>
+          <span class="tab">eggsPerYear:150+,</span><br>
+          <span class="tab">temperament:docile,</span><br>
+          <span class="tab">coldTolerance:good,</span><br>
+          <span class="tab">heatTolerance:good,</span><br>
+          <span class="tab">varieties: [</span><br>
           <span class="tab2">{</span><br>
-          <span class="tab3">color:blue/green</span><br>
-          <span class="tab3">size:small</span><br>
-          <span class="tab3">production:good</span><br>
-          <span class="tab2">},</span><br>
-          <span class="tab">Comb type:pea</span><br>
+          <span class="tab3">variety:buff,</span><br>
+          <span class="tab3">comb:single,</span><br>
+          <span class="tab3">description:description</span><br>
+          <span class="tab2">}</span><br>
+          <span class="tab">]</span><br>
           }
 
         </td>
@@ -57,56 +66,57 @@
         <td>Get all breeds by egg color</td>
         <td>/breeds/eggs/[color]</td>
         <td>GET</td>
-        <td>none</td>
-        <td>A JSON object holding all breeds with specified color eggs</td>
+        <td>None</td>
+        <td>A JSON object holding all breeds with specified color eggs.</td>
       </tr>
       <tr>
         <td>Get all breeds by APA Class</td>
         <td>/breeds/class/[class]</td>
         <td>GET</td>
         <td>None</td>
-        <td>A JSON object holding all breeds with specified class</td>
+        <td>A JSON object holding all breeds with specified class.</td>
       </tr>
       <tr>
         <td>Allow a new user to register</td>
         <td>/users</td>
         <td>POST</td>
-        <td>A JSON object holding the new users Username, password, and email. Optional: name.<br>
+        <td>A JSON object holding the new users username, password, and email. Optional: birthday.<br>
           {<br>
           <span class="tab">username:JaneDoe42,</span><br>
           <span class="tab">password:small toaster horse leaf2, </span><br>
           <span class="tab">email:janedoe@janedoe.com</span><br>
+          <span class="tab">birthday: mm/dd/yyyy</span><br>
           }
         </td>
-        <td>A JSON object holding the new users information</td>
+        <td>A JSON object holding the new users information.</td>
       </tr>
       <tr>
         <td>Allow user to update their user info</td>
         <td>/users/[username]</td>
         <td>PUT</td>
-        <td>A JSON object holding user data to be changed</td>
-        <td>A JSON object holding updated user information</td>
+        <td>A JSON object holding user data to be updated. Can send only fields to be update or all fields.</td>
+        <td>A JSON object holding updated user information.</td>
       </tr>
       <tr>
         <td>Allow user to view all breeds on their favorites list</td>
         <td>/users/[username]/favorites</td>
         <td>GET</td>
         <td>None</td>
-        <td>A JSON object holding users list of favorite breeds.</td>
+        <td>A JSON object with information on all breeds in users favorites list.</td>
       </tr>
       <tr>
         <td>Allow user to add breeds to their favorites list</td>
-        <td>/users/[username]/favorites/[breed]</td>
+        <td>/users/[username]/favorites/[breedName]</td>
         <td>POST</td>
         <td>None</td>
-        <td>A text message indicating that the breed was added to their favorites list successfully.</td>
+        <td>A JSON object with information on all breeds in users updated favorites list.</td>
       </tr>
       <tr>
         <td>Allow users to remove breeds from their favorites list</td>
-        <td>/users/[username]/favorites/[breed]</td>
+        <td>/users/[username]/favorites/[breedID]</td>
         <td>DELETE</td>
         <td>None</td>
-        <td>A text message indicating that the breed was deleted from their favorites list.</td>
+        <td>A JSON object with information on all breeds in users updated favorites list.</td>
       </tr>
       <tr>
         <td>Allow user to delete their account</td>
