@@ -5,6 +5,8 @@ const app = express();
 // Import modules
 const morgan = require('morgan');
 
+require('./passport');
+
 // Middleware
 app.use(morgan('common'));
 app.use(express.static('public'));
@@ -17,6 +19,9 @@ app.use((err, req, res, next) => {
 });
 
 // Routes
+let auth = require('./routes/auth.js');
+app.use('/login', auth);
+
 // Breed Routes
 let breeds = require('./routes/breeds.js');
 app.use('/breeds', breeds);

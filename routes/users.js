@@ -1,19 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+
+const passport = require('passport');
+require('../passport');
+
 const { Breed } = require('../models/Breed.js');
 const { User } = require('../models/User.js');
-
-// const User = Models.User;
 
 mongoose.connect('mongodb://localhost:27017/chickendb', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
+let auth = passport.authenticate('jwt', { session: false });
+
 // FOR DEV ONLY!
 // RETURNS ALL USERS
-router.get('/', (req, res) => {
+router.get('/', auth, (req, res) => {
   User.find()
     .then((users) => {
       return res.status(201).json(users);
@@ -51,7 +55,7 @@ router.post('/', (req, res) => {
 });
 
 // Update existing user
-router.put('/:username', (req, res) => {
+router.put('/:username', auth, (req, res) => {
   let reqUser = req.body;
 
   //Find user by username
@@ -83,7 +87,7 @@ router.put('/:username', (req, res) => {
 });
 
 // Get list of users favorite breeds
-router.get('/:username/favorites', (req, res) => {
+router.get('/:username/favorites', auth, (req, res) => {
   User.findOne({ username: req.params.username })
     .populate('favoriteBreeds')
     .then((user) => {
@@ -100,7 +104,7 @@ router.get('/:username/favorites', (req, res) => {
 });
 
 // Add breed to users favorite list
-router.post('/:username/favorites/:breedName', (req, res) => {
+router.post('/:username/favorites/:breedName', auth, (req, res) => {
   // Find the User
   User.findOne({ username: req.params.username })
     .then((user) => {
@@ -143,7 +147,7 @@ router.post('/:username/favorites/:breedName', (req, res) => {
 });
 
 // Remove a breed from users favorite list
-router.delete('/:username/favorites/:breedId', (req, res) => {
+router.delete('/:username/favorites/:breedId', auth, (req, res) => {
   // Find the user.
   User.findOne({ username: req.params.username }).then((user) => {
     // User doesn't exist. Abort.
@@ -171,7 +175,7 @@ router.delete('/:username/favorites/:breedId', (req, res) => {
 });
 
 // Delete the User account.
-router.delete('/:username', (req, res) => {
+router.delete('/:username', auth, (req, res) => {
   // Find the user.
   User.findOneAndDelete({ username: req.params.username })
     .then((user) => {

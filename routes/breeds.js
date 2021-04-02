@@ -1,12 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const Models = require('../models/Breed.js');
 
-const Breed = Models.Breed;
+const passport = require('passport');
+require('../passport');
+
+const { Breed } = require('../models/Breed.js');
+
+let auth = passport.authenticate('jwt', { session: false });
 
 // Get all chicken breeds
-router.get('/', (req, res) => {
+router.get('/', auth, (req, res) => {
   Breed.find()
     .then((breeds) => {
       return res.status(200).json(breeds);
@@ -17,7 +21,7 @@ router.get('/', (req, res) => {
 });
 
 // Get one breed by name
-router.get('/:breed', (req, res) => {
+router.get('/:breed', auth, (req, res) => {
   Breed.findOne({ breed: req.params.breed })
     .then((breed) => {
       // No breed found. Abort
@@ -32,7 +36,7 @@ router.get('/:breed', (req, res) => {
 });
 
 // Get all breeds by egg color
-router.get('/eggs/:color', (req, res) => {
+router.get('/eggs/:color', auth, (req, res) => {
   Breed.find({ eggColor: req.params.color.toLowerCase() })
     .then((breeds) => {
       // No Breeds Found. Abort
@@ -49,7 +53,7 @@ router.get('/eggs/:color', (req, res) => {
 });
 
 // Get all breeds of specified class
-router.get('/class/:class', (req, res) => {
+router.get('/class/:class', auth, (req, res) => {
   Breed.find({ apaClass: req.params.class })
     .then((breeds) => {
       // No breeds found. Abort.
