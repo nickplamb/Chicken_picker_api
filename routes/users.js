@@ -1,19 +1,49 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const { check, body, validationResult } = require('express-validator');
 
 const passport = require('passport');
 require('../passport');
 
+// Models
 const { Breed } = require('../models/Breed.js');
 const { User } = require('../models/User.js');
 
+// DB connection
 mongoose.connect('mongodb://localhost:27017/chickendb', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
+// Route Authentication
 let auth = passport.authenticate('jwt', { session: false });
+
+// Input validation rules
+let newUserValidation = [
+  check('username', 'Username is required and must be at least 5 characters long').isLength({
+    min: 5,
+  }),
+  check('username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(),
+  check('password', 'Password is required and must be at least 10 characters long').isLength({
+    min: 10,
+  }),
+  check('email', 'Email does not appear to be valid').isEmail().normalizeEmail(),
+  check('birthday').optional().toDate(),
+];
+let updateUserValidation = [
+  check('username', 'Username is required and must be at least 5 characters long')
+    .isLength({ min: 5 })
+    .optional(),
+  check('username', 'Username contains non alphanumeric characters - not allowed')
+    .isAlphanumeric()
+    .optional(),
+  check('password', 'Password is required and must be at least 10 characters long')
+    .isLength({ min: 10 })
+    .optional(),
+  check('email', 'Email does not appear to be valid').isEmail().normalizeEmail().optional(),
+  check('birthday').optional().toDate().optional(),
+];
 
 // FOR DEV ONLY!
 // RETURNS ALL USERS
@@ -30,7 +60,14 @@ router.get('/', auth, (req, res) => {
 // FOR DEV ONLY!
 
 // Create new user
-router.post('/', (req, res) => {
+router.post('/', newUserValidation, (req, res) => {
+  // Validate user inputs
+  let validationErrors = validationResult(req);
+
+  if (!validationErrors.isEmpty()) {
+    return res.status(422).json({ errors: validationErrors.array() });
+  }
+
   // Has the password
   let hashedPassword = User.hashPassword(req.body.password);
 
@@ -63,7 +100,7 @@ router.post('/', (req, res) => {
 });
 
 // Update existing user
-router.put('/:username', auth, (req, res) => {
+router.put('/:username', auth, updateUserValidation, (req, res) => {
   let reqUser = req.body;
 
   //Find user by username
@@ -76,7 +113,11 @@ router.put('/:username', auth, (req, res) => {
 
       // Only update properties passed
       Object.keys(reqUser).forEach((key) => {
-        user[key] = reqUser[key];
+        if (key === 'password') {
+          user[key] = User.hashPassword(reqUser[key]);
+        } else {
+          user[key] = reqUser[key];
+        }
       });
 
       // save the user
