@@ -31,27 +31,35 @@ router.get('/', auth, (req, res) => {
 
 // Create new user
 router.post('/', (req, res) => {
-  // Check for existing user by the username in the body
-  User.findOne({ username: req.body.username }).then((user) => {
-    // if user already exist return with response.
-    if (user) {
-      return res.status(409).send(`${req.body.username} already exists.`);
-    }
+  // Has the password
+  let hashedPassword = User.hashPassword(req.body.password);
 
-    // otherwise, create the new user.
-    User.create({
-      username: req.body.username,
-      password: req.body.password,
-      email: req.body.email,
-      birthday: req.body.birthday,
-    })
-      .then((user) => {
-        return res.status(201).json(user);
+  // Check for existing user by the username in the body
+  User.findOne({ username: req.body.username })
+    .then((user) => {
+      // if user already exist return with response.
+      if (user) {
+        return res.status(409).send(`${req.body.username} already exists.`);
+      }
+
+      // otherwise, create the new user.
+      User.create({
+        username: req.body.username,
+        password: hashedPassword,
+        email: req.body.email,
+        birthday: req.body.birthday,
       })
-      .catch((err) => {
-        return res.status(500).send(`Error: ${err}`);
-      });
-  });
+        .then((user) => {
+          return res.status(201).json(user);
+        })
+        .catch((err) => {
+          return res.status(500).send(`Error: ${err}`);
+        });
+    })
+    .catch((err) => {
+      console.error(err);
+      return res.status(500).send(`Error: ${err}`);
+    });
 });
 
 // Update existing user
