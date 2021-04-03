@@ -19,7 +19,7 @@
         <th>Purpose</th>
         <th>URL</th>
         <th>HTTP Method</th>
-        <th>Request body data format</th>
+        <th>Request data format</th>
         <th>Response body data format</th>
       </tr>
     </thead>
@@ -28,14 +28,14 @@
         <td>Get all Chicken Breeds</td>
         <td>/breeds</td>
         <td>GET</td>
-        <td>None</td>
+        <td>Header with authorized users JWT bearer token</td>
         <td>A JSON object holding data about all chicken breeds</td>
       </tr>
       <tr>
         <td>Get Chicken Breed by name</td>
         <td>/breeds/[name]</td>
         <td>GET</td>
-        <td>None</td>
+        <td>Header with authorized users JWT bearer token</td>
         <td>A JSON object holding data about a single breed containing an ID, Name, APA Class, Egg Color, Description,
           etc. <br>
           {<br>
@@ -51,13 +51,11 @@
           <span class="tab">temperament:docile,</span><br>
           <span class="tab">coldTolerance:good,</span><br>
           <span class="tab">heatTolerance:good,</span><br>
-          <span class="tab">varieties: [</span><br>
-          <span class="tab2">{</span><br>
+          <span class="tab">varieties: [{</span><br>
           <span class="tab3">variety:buff,</span><br>
           <span class="tab3">comb:single,</span><br>
           <span class="tab3">description:description</span><br>
-          <span class="tab2">}</span><br>
-          <span class="tab">]</span><br>
+          <span class="tab2">}]</span><br>
           }
 
         </td>
@@ -66,14 +64,14 @@
         <td>Get all breeds by egg color</td>
         <td>/breeds/eggs/[color]</td>
         <td>GET</td>
-        <td>None</td>
+        <td>Header with authorized users JWT bearer token</td>
         <td>A JSON object holding all breeds with specified color eggs.</td>
       </tr>
       <tr>
         <td>Get all breeds by APA Class</td>
         <td>/breeds/class/[class]</td>
         <td>GET</td>
-        <td>None</td>
+        <td>Header with authorized users JWT bearer token.</td>
         <td>A JSON object holding all breeds with specified class.</td>
       </tr>
       <tr>
@@ -91,38 +89,47 @@
         <td>A JSON object holding the new users information.</td>
       </tr>
       <tr>
+        <td>Allow user to Login</td>
+        <td>/users</td>
+        <td>POST</td>
+        <td>A JSON object holding "username" and "password" fields.</td>
+        <td>A JSON object holding users information and JWT bearer token.</td>
+      </tr>
+      <tr>
         <td>Allow user to update their user info</td>
-        <td>/users/[username]</td>
+        <td>/users</td>
         <td>PUT</td>
-        <td>A JSON object holding user data to be updated. Can send only fields to be update or all fields.</td>
+        <td>A JSON object holding user data to be updated. <br>
+          Can send only fields to be update or all fields.<br>
+          Header with authorized users JWT bearer token.</td>
         <td>A JSON object holding updated user information.</td>
       </tr>
       <tr>
         <td>Allow user to view all breeds on their favorites list</td>
-        <td>/users/[username]/favorites</td>
+        <td>/users/favorites</td>
         <td>GET</td>
-        <td>None</td>
+        <td>Header with authorized users JWT bearer token.</td>
         <td>A JSON object with information on all breeds in users favorites list.</td>
       </tr>
       <tr>
         <td>Allow user to add breeds to their favorites list</td>
-        <td>/users/[username]/favorites/[breedName]</td>
+        <td>/users/favorites/[breedName]</td>
         <td>POST</td>
-        <td>None</td>
+        <td>Header with authorized users JWT bearer token.</td>
         <td>A JSON object with information on all breeds in users updated favorites list.</td>
       </tr>
       <tr>
         <td>Allow users to remove breeds from their favorites list</td>
-        <td>/users/[username]/favorites/[breedID]</td>
+        <td>/users/favorites/[breedID]</td>
         <td>DELETE</td>
-        <td>None</td>
+        <td>Header with authorized users JWT bearer token.</td>
         <td>A JSON object with information on all breeds in users updated favorites list.</td>
       </tr>
       <tr>
         <td>Allow user to delete their account</td>
-        <td>/users/[username]</td>
+        <td>/users</td>
         <td>DELETE</td>
-        <td>None</td>
+        <td>Header with authorized users JWT bearer token.</td>
         <td>A text message indicating that the users account has been deleted.</td>
       </tr>
     </tbody>

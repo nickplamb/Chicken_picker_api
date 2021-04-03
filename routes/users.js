@@ -99,12 +99,12 @@ router.post('/', newUserValidation, (req, res) => {
     });
 });
 
-// Update existing user
-router.put('/:username', auth, updateUserValidation, (req, res) => {
+// Update existing user by _id in JWT token
+router.put('/', auth, updateUserValidation, (req, res) => {
   let reqUser = req.body;
 
-  //Find user by username
-  User.findOne({ username: req.params.username })
+  //Find user by username decrypted from JWT token
+  User.findById(req.user._id)
     .then((user) => {
       // If user found, Abort.
       if (!user) {
@@ -135,9 +135,9 @@ router.put('/:username', auth, updateUserValidation, (req, res) => {
     });
 });
 
-// Get list of users favorite breeds
-router.get('/:username/favorites', auth, (req, res) => {
-  User.findOne({ username: req.params.username })
+// Get list of users favorite breeds by _id in JWT token
+router.get('/favorites', auth, (req, res) => {
+  User.findById(req.user._id)
     .populate('favoriteBreeds')
     .then((user) => {
       // User not found, Abort.
@@ -153,9 +153,9 @@ router.get('/:username/favorites', auth, (req, res) => {
 });
 
 // Add breed to users favorite list
-router.post('/:username/favorites/:breedName', auth, (req, res) => {
+router.post('/favorites/:breedName', auth, (req, res) => {
   // Find the User
-  User.findOne({ username: req.params.username })
+  User.findById(req.user._id)
     .then((user) => {
       // User doesn't exist. Abort.
       if (!user) {
@@ -196,9 +196,9 @@ router.post('/:username/favorites/:breedName', auth, (req, res) => {
 });
 
 // Remove a breed from users favorite list
-router.delete('/:username/favorites/:breedId', auth, (req, res) => {
+router.delete('/favorites/:breedId', auth, (req, res) => {
   // Find the user.
-  User.findOne({ username: req.params.username }).then((user) => {
+  User.findById(req.user._id).then((user) => {
     // User doesn't exist. Abort.
     if (!user) {
       return res.status(404).send('User not found. Please try again.');
@@ -224,16 +224,16 @@ router.delete('/:username/favorites/:breedId', auth, (req, res) => {
 });
 
 // Delete the User account.
-router.delete('/:username', auth, (req, res) => {
+router.delete('/', auth, (req, res) => {
   // Find the user.
-  User.findOneAndDelete({ username: req.params.username })
+  User.findByIdAndDelete(req.user._id)
     .then((user) => {
       // User not found. Abort.
       if (!user) {
-        return res.status(404).send(`${req.params.username} was not found.`);
+        return res.status(404).send(`${req.user.username} was not found.`);
       }
       // User has been deleted
-      return res.status(200).send(`${req.params.username} has been deleted.`);
+      return res.status(200).send(`${req.user.username} has been deleted.`);
     })
     .catch((err) => {
       return res.status(500).send(`Error: ${err}`);
