@@ -1,10 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { check, body, validationResult } = require('express-validator');
-
-const passport = require('passport');
-require('../passport');
 
 // Models
 const { Breed } = require('../models/Breed.js');
@@ -17,9 +13,12 @@ mongoose.connect('mongodb://localhost:27017/chickendb', {
 });
 
 // Route Authentication
+const passport = require('passport');
+require('../passport');
 let auth = passport.authenticate('jwt', { session: false });
 
 // Input validation rules
+const { check, body, validationResult } = require('express-validator');
 let newUserValidation = [
   check('username', 'Username is required and must be at least 5 characters long').isLength({
     min: 5,
