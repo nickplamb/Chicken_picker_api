@@ -92,7 +92,7 @@
         <td>Allow user to Login</td>
         <td>/users</td>
         <td>POST</td>
-        <td>A JSON object holding "username" and "password" fields.</td>
+        <td>A JSON object holding "email" and "password" fields.</td>
         <td>A JSON object holding users information and JWT bearer token.</td>
       </tr>
       <tr>
@@ -101,6 +101,7 @@
         <td>PUT</td>
         <td>A JSON object holding user data to be updated. <br>
           Can send only fields to be update or all fields.<br>
+          Email address cannot be updated.<br>
           Header with authorized users JWT bearer token.</td>
         <td>A JSON object holding updated user information.</td>
       </tr>
