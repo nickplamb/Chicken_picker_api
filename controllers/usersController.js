@@ -62,11 +62,12 @@ exports.user_post_new_user = function (req, res) {
   let hashedPassword = User.hashPassword(req.body.password);
 
   // Check for existing user by the username in the body
-  User.findOne({ username: req.body.username })
+  User.findOne()
+    .byEmail(req.body.email)
     .then((user) => {
       // if user already exist return with response.
       if (user) {
-        return res.status(409).send(`${req.body.username} already exists.`);
+        return res.status(409).send(`The email address ${req.body.email} is already registered.`);
       }
 
       // otherwise, create the new user.

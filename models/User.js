@@ -7,15 +7,22 @@ const userSchema = Schema(
   {
     username: { type: String, required: true },
     password: { type: String, required: true },
-    email: { type: String, required: true },
+    email: { type: String, required: true, unique: true, lowercase: true },
     birthday: Date,
     favoriteBreeds: [{ type: Schema.Types.ObjectId, ref: 'Breed' }],
   },
   { timestamps: true }
 );
 
-userSchema.statics.hashPassword = (password) => {
+userSchema.statics.hashPassword = function (password) {
   return bcrypt.hashSync(password, 10);
+};
+
+userSchema.query.byUsername = function (username) {
+  return this.where({ username: new RegExp(username, 'i') });
+};
+userSchema.query.byEmail = function (email) {
+  return this.where({ email: new RegExp(email, 'i') });
 };
 
 // must use standard function declaration so that 'this' references
