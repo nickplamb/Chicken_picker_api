@@ -153,7 +153,8 @@ exports.user_post_new_favorite = function (req, res) {
         return res.status(404).send('User not found. Please try again.');
       }
       // Find the breed.
-      Breed.findOne({ breed: req.params.breedName })
+      Breed.findOne()
+        .byBreed(req.params.breedName)
         .then((breed) => {
           // Breed not found. Abort.
           if (!breed) {
