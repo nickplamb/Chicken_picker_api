@@ -104,10 +104,17 @@ exports.user_put_user_update = function (req, res) {
 
       // Only update properties passed
       Object.keys(reqUser).forEach((key) => {
-        if (key === 'password') {
-          user[key] = User.hashPassword(reqUser[key]);
-        } else {
-          user[key] = reqUser[key];
+        switch (key) {
+          case 'password':
+            user.password = User.hashPassword(reqUser.password);
+            break;
+          case 'username':
+            user.username = reqUser.username;
+            break;
+          case 'birthday':
+            user.birthday = reqUser.birthday;
+          default:
+            break;
         }
       });
 
