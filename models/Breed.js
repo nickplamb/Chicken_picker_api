@@ -6,7 +6,10 @@ const breedSchema = Schema({
   description: String,
   eggColor: { type: String, required: true, lowercase: true },
   eggSize: { type: String, lowercase: true },
-  apaClass: { type: String, required: true },
+  apaClass: {
+    name: { type: String, required: true },
+    abbreviation: { type: String },
+  },
   purpose: { type: String, lowercase: true },
   eggProduction: { type: String, lowercase: true },
   eggsPerYear: { type: String, lowercase: true },
@@ -22,8 +25,16 @@ const breedSchema = Schema({
   ],
 });
 
-breedSchema.query.byBreed = function (breed) {
+breedSchema.statics.findByBreed = function (breed) {
   return this.where({ breed: new RegExp(breed, 'i') });
+};
+
+breedSchema.query.byApaClass = function (apaClass) {
+  return this.find({ 'apaClass.name': new RegExp(apaClass, 'i') });
+};
+
+breedSchema.query.byEggColor = function (color) {
+  return this.find({ eggColor: new RegExp(color, 'i') });
 };
 
 let Breed = mongoose.model('Breed', breedSchema);

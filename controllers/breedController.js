@@ -21,8 +21,7 @@ exports.breed_get_all_breeds = function (req, res) {
 
 // Get one breed by name
 exports.breeds_get_breed_by_name = function (req, res) {
-  Breed.findOne()
-    .byBreed(req.params.breed)
+  Breed.findByBreed(req.params.breed)
     .then((breed) => {
       // No breed found. Abort
       if (!breed) {
@@ -37,7 +36,8 @@ exports.breeds_get_breed_by_name = function (req, res) {
 
 // Get all breeds by egg color
 exports.breed_get_breeds_by_egg_color = function (req, res) {
-  Breed.find({ eggColor: req.params.color.toLowerCase() })
+  Breed.find()
+    .byEggColor(req.params.color)
     .then((breeds) => {
       // No Breeds Found. Abort
       if (breeds.length === 0) {
@@ -54,7 +54,8 @@ exports.breed_get_breeds_by_egg_color = function (req, res) {
 
 // Get all breeds of specified class
 exports.breed_get_breeds_by_class = function (req, res) {
-  Breed.find({ apaClass: req.params.class })
+  Breed.find()
+    .byApaClass(req.params.class)
     .then((breeds) => {
       // No breeds found. Abort.
       if (breeds.length === 0) {
