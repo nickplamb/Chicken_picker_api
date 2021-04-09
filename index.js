@@ -1,6 +1,7 @@
 // Create the server
 const express = require('express');
 const app = express();
+const port = process.env.PORT || 8080;
 
 // Import modules
 const morgan = require('morgan');
@@ -49,6 +50,6 @@ let users = require('./routes/users.js');
 app.use('/users', users);
 
 // Start the server
-app.listen(8080, () => {
-  console.log('Your app is listening on port 8080.');
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Your app is listening on port ${port}.`);
 });

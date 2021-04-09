@@ -4,6 +4,7 @@
   "description": "An api for fans of Chickens",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "jsdoc": "jsdoc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
