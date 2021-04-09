@@ -7,7 +7,11 @@ const port = process.env.PORT || 8080;
 const morgan = require('morgan');
 const cors = require('cors');
 
-require('./passport');
+require('./config/passport');
+
+//DB connection
+const connectDB = require('./config/db');
+connectDB();
 
 let allowedOrigins = ['http://localhost:8080'];
 

@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const { Breed } = require('../models/Breed');
 
 const bcrypt = require('bcrypt');
 
 const userSchema = Schema(
   {
+    _id: { type: Schema.ObjectId, auto: true },
     username: { type: String, required: true },
     password: { type: String, required: true },
     email: { type: String, required: true, unique: true, lowercase: true },

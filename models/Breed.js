@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const breedSchema = Schema({
+  // _id: { type: Schema.ObjectId, auto: true },
   breed: { type: String, required: true },
   description: String,
   eggColor: { type: String, required: true, lowercase: true },
@@ -25,7 +26,7 @@ const breedSchema = Schema({
   ],
 });
 
-breedSchema.statics.findByBreed = function (breed) {
+breedSchema.query.byBreed = function (breed) {
   return this.where({ breed: new RegExp(breed, 'i') });
 };
 

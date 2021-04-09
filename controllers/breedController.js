@@ -1,13 +1,6 @@
 // Models
 const { Breed } = require('../models/Breed.js');
 
-// DB connection
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/chickendb', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
 // Get all chicken breeds
 exports.breed_get_all_breeds = function (req, res) {
   Breed.find()

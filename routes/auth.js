@@ -5,7 +5,7 @@ const passport = require('passport');
 
 const jwtSecret = 'hope_frankie_nick-ole';
 
-require('../passport.js');
+require('../config/passport.js');
 
 let generateJWTToken = (user) => {
   return jwt.sign(user, jwtSecret, {

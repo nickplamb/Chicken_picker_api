@@ -3,7 +3,7 @@ const router = express.Router();
 
 //Authentication
 const passport = require('passport');
-require('../passport');
+require('../config/passport');
 let auth = passport.authenticate('jwt', { session: false });
 
 //Controller

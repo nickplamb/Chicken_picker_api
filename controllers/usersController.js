@@ -2,13 +2,6 @@
 const { Breed } = require('../models/Breed.js');
 const { User } = require('../models/User.js');
 
-// DB connection
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/chickendb', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
 // Input validation rules
 const { check, validationResult } = require('express-validator');
 let newUserValidation = [
@@ -160,6 +153,7 @@ exports.user_post_new_favorite = function (req, res) {
         return res.status(404).send('User not found. Please try again.');
       }
       // Find the breed.
+      // Breed.findOne().byBreed(req.params.breedName)
       Breed.findOne()
         .byBreed(req.params.breedName)
         .then((breed) => {
@@ -186,7 +180,7 @@ exports.user_post_new_favorite = function (req, res) {
             });
         })
         .catch((err) => {
-          return res.status(500).send(`Error: ${err}`);
+          return res.status(500).send(`Error here?: ${err}`);
         });
     })
     .catch((err) => {

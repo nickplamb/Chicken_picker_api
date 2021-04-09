@@ -6,7 +6,7 @@ const user_controller = require('../controllers/usersController');
 
 // Route Authentication
 const passport = require('passport');
-require('../passport');
+require('../config/passport');
 const auth = passport.authenticate('jwt', { session: false });
 
 // Input validation rules
