@@ -39,7 +39,7 @@ app.use((err, req, res, next) => {
 
 // Routes
 app.get('/', (req, res) => {
-  res.sendFile('./public/documentation.html');
+  res.sendFile(__dirname + '/public/documentation.html');
 });
 
 let auth = require('./routes/auth.js');
