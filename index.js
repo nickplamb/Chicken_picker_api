@@ -38,6 +38,10 @@ app.use((err, req, res, next) => {
 });
 
 // Routes
+app.get('/', (req, res) => {
+  res.sendFile('./public/documentation.html');
+});
+
 let auth = require('./routes/auth.js');
 app.use('/login', auth);
 
