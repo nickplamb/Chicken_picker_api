@@ -10,7 +10,7 @@ const cors = require('cors');
 require('./config/passport');
 
 //DB connection
-const connectDB = require('./config/db');
+const { connectDB } = require('./config/db');
 connectDB();
 
 let allowedOrigins = ['http://localhost:8080'];
