@@ -14,7 +14,8 @@ exports.breed_get_all_breeds = function (req, res) {
 
 // Get one breed by name
 exports.breeds_get_breed_by_name = function (req, res) {
-  Breed.findByBreed(req.params.breed)
+  Breed.findOne()
+    .byBreed(req.params.breed)
     .then((breed) => {
       // No breed found. Abort
       if (!breed) {
