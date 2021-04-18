@@ -13,7 +13,7 @@ require('./config/passport');
 const { connectDB } = require('./config/db');
 connectDB();
 
-let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234'];
+let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', '*'];
 
 // Middleware
 app.use(morgan('common'));
