@@ -10,7 +10,7 @@ let auth = passport.authenticate('jwt', { session: false });
 const breed_controller = require('../controllers/breedController');
 
 // Get all chicken breeds
-router.get('/', breed_controller.breed_get_all_breeds); // auth, removed for testing
+router.get('/', auth, breed_controller.breed_get_all_breeds);
 
 // Get one breed by name
 router.get('/:breed', auth, breed_controller.breeds_get_breed_by_name);
