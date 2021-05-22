@@ -24,6 +24,7 @@ const breedSchema = Schema({
       description: String,
     },
   ],
+  imgUrl: { type: String, lowercase: true },
 });
 
 breedSchema.query.byBreed = function (breed) {
