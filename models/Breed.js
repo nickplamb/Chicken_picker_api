@@ -5,6 +5,7 @@ const breedSchema = Schema({
   // _id: { type: Schema.ObjectId, auto: true },
   breed: { type: String, required: true },
   description: String,
+  origin: String,
   eggColor: { type: String, required: true, lowercase: true },
   eggSize: { type: String, lowercase: true },
   apaClass: {
