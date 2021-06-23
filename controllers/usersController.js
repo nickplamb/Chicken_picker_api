@@ -154,8 +154,7 @@ exports.user_post_new_favorite = function (req, res) {
       }
       // Find the breed.
       // Breed.findOne().byBreed(req.params.breedName)
-      Breed.findOne()
-        .byBreed(req.params.breedName)
+      Breed.findById(req.params.breedId)
         .then((breed) => {
           // Breed not found. Abort.
           if (!breed) {

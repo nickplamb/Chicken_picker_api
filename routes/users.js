@@ -51,7 +51,7 @@ router.put('/', auth, updateUserValidation, user_controller.user_put_user_update
 router.get('/favorites', auth, user_controller.user_get_favorites);
 
 // Add breed to users favorite list
-router.post('/favorites/:breedName', auth, user_controller.user_post_new_favorite);
+router.post('/favorites/:breedId', auth, user_controller.user_post_new_favorite);
 
 // Remove a breed from users favorite list
 router.delete('/favorites/:breedId', auth, user_controller.user_delete_user_favorite);
