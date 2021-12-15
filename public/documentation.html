@@ -11,7 +11,7 @@
 
 <body>
   <h1>Chicken API Documentation</h1>
-  <p>This will be an api for calling Chicken data.</p>
+  <p>An API for pick'n your favorite chicken breeds.</p>
 
   <table>
     <thead>
@@ -28,103 +28,125 @@
         <td>Get all Chicken Breeds</td>
         <td>/breeds</td>
         <td>GET</td>
-        <td>Header with authorized users JWT bearer token</td>
-        <td>A JSON object holding data about all chicken breeds</td>
-      </tr>
-      <tr>
-        <td>Get Chicken Breed by name</td>
-        <td>/breeds/[name]</td>
-        <td>GET</td>
-        <td>Header with authorized users JWT bearer token</td>
-        <td>A JSON object holding data about a single breed containing an ID, Name, APA Class, Egg Color, Description,
+        <td>Header with authorized users JWT bearer token.</td>
+        <td>A JSON object with data about all breeds containing an Id, Name, APA Class, Egg Color, Description,
           etc. <br>
           {<br>
-          <span class="tab">id:1,</span><br>
-          <span class="tab">breed:Ameraucana Black,</span><br>
-          <span class="tab">description:description,</span><br>
-          <span class="tab">eggColor:blue/green,</span><br>
-          <span class="tab">eggSize:small,</span><br>
-          <span class="tab">apaClass:AOCCL(All Other Combs Clean Leg),</span><br>
-          <span class="tab">purpose:eggs,</span><br>
-          <span class="tab">eggProduction:good,</span><br>
-          <span class="tab">eggsPerYear:150+,</span><br>
-          <span class="tab">temperament:docile,</span><br>
-          <span class="tab">coldTolerance:good,</span><br>
-          <span class="tab">heatTolerance:good,</span><br>
-          <span class="tab">varieties: [{</span><br>
-          <span class="tab3">variety:buff,</span><br>
-          <span class="tab3">comb:single,</span><br>
-          <span class="tab3">description:description</span><br>
-          <span class="tab2">}]</span><br>
+          <span class="tab">id: 1,</span>
+          <span class="tab">breed: "Ameraucana Black",</span>
+          <span class="tab">description: "description",</span>
+          <span class="tab">eggColor: "blue/green",</span>
+          <span class="tab">eggSize: "small",</span>
+          <span class="tab">apaClass: "AOCCL(All Other Combs Clean Leg)",</span>
+          <span class="tab">purpose: "eggs",</span>
+          <span class="tab">eggProduction: "good",</span>
+          <span class="tab">eggsPerYear: "150+",</span>
+          <span class="tab">temperament: "docile",</span>
+          <span class="tab">coldTolerance: "good",</span>
+          <span class="tab">heatTolerance: "good",</span>
+          <span class="tab">varieties: [</span>
+          <span class="tab2">{</span>
+          <span class="tab3">variety: "buff",</span>
+          <span class="tab3">comb: "single",</span>
+          <span class="tab3">description: "description"</span>
+          <span class="tab2">},</span>
+          <span class="tab2">...</span>
+          <span class="tab">]</span>
           }
 
         </td>
       </tr>
       <tr>
+        <td>Get Chicken Breed by name</td>
+        <td>/breeds/[name]</td>
+        <td>GET</td>
+        <td>Header with authorized users JWT bearer token.</td>
+        <td>A JSON object with data about specified chicken breed.</td>
+      </tr>
+      <tr>
         <td>Get all breeds by egg color</td>
         <td>/breeds/eggs/[color]</td>
         <td>GET</td>
-        <td>Header with authorized users JWT bearer token</td>
-        <td>A JSON object holding all breeds with specified color eggs.</td>
+        <td>Header with authorized users JWT bearer token.</td>
+        <td>A JSON object with data about all breeds with specified color eggs.</td>
       </tr>
       <tr>
         <td>Get all breeds by APA Class</td>
         <td>/breeds/class/[class]</td>
         <td>GET</td>
         <td>Header with authorized users JWT bearer token.</td>
-        <td>A JSON object holding all breeds with specified class.</td>
+        <td>A JSON object with data about all breeds with specified class.</td>
       </tr>
       <tr>
         <td>Allow user to Login</td>
         <td>/login</td>
         <td>POST</td>
-        <td>A JSON object holding "email" and "password" fields.</td>
-        <td>A JSON object holding users information and JWT bearer token.</td>
+        <td>A JSON object with "email" and "password" fields.</td>
+        <td>A JSON object with users information and JWT bearer token.
+          <br>
+          {<br>
+          <span class="tab">user: {</span>
+          <span class="tab2">favoriteBreeds: [</span>
+          <span class="tab3">"606fabac4ecea6d979792c15",</span>
+          <span class="tab3">...</span>
+          <span class="tab2">],</span>
+          <span class="tab2">_id: "61ad3f244f35860015640f48",</span>
+          <span class="tab2">username: "username",</span>
+          <span class="tab2">password: "salted and hashed password",</span>
+          <span class="tab2">email: "email address",</span>
+          <span class="tab2">birthday: "date string",</span>
+          <span class="tab2">createdAt: "date string of record creation",</span>
+          <span class="tab2">updatedAt: "date string of last record update",</span>
+          <span class="tab2">__v: record version (number)</span>
+          <span class="tab">},</span>
+          <span class="tab">token: "JSON web token"</span>
+          }
+        </td>
       </tr>
       <tr>
         <td>Allow a new user to register</td>
         <td>/users</td>
         <td>POST</td>
-        <td>A JSON object holding the new users username, password, and email. Optional: birthday.<br>
+        <td>A JSON object with the new users username, password, and email. Optional: birthday.<br>
           {<br>
-          <span class="tab">username:JaneDoe42,</span><br>
-          <span class="tab">password:small toaster horse leaf2, </span><br>
-          <span class="tab">email:janedoe@janedoe.com</span><br>
-          <span class="tab">birthday: mm/dd/yyyy</span><br>
+          <span class="tab">username: "JaneDoe42",</span>
+          <span class="tab">password: "small toaster horse leaf2", </span>
+          <span class="tab">email: "janedoe@janedoe.com",</span>
+          <span class="tab">birthday: "JS date string or mm/dd/yyyy"</span>
           }
         </td>
-        <td>A JSON object holding the new users information.</td>
+        <td>A JSON object with the new users information.</td>
       </tr>
       <tr>
         <td>Allow user to update their user info</td>
         <td>/users</td>
         <td>PUT</td>
-        <td>A JSON object holding user data to be updated. <br>
+        <td>A JSON object holding user data to be updated.<br>
           Can send only fields to be update or all fields.<br>
           Email address cannot be updated.<br>
           Header with authorized users JWT bearer token.</td>
-        <td>A JSON object holding updated user information.</td>
+        <td>A JSON object with updated user information.</td>
       </tr>
       <tr>
         <td>Allow user to view all breeds on their favorites list</td>
         <td>/users/favorites</td>
         <td>GET</td>
         <td>Header with authorized users JWT bearer token.</td>
-        <td>A JSON object with information on all breeds in users favorites list.</td>
+        <td>A JSON object with full records on all breeds in users favorites list.</td>
       </tr>
       <tr>
         <td>Allow user to add breeds to their favorites list</td>
         <td>/users/favorites/[breedId]</td>
         <td>POST</td>
         <td>Header with authorized users JWT bearer token.</td>
-        <td>A JSON object with information on all breeds in users updated favorites list.</td>
+        <td>A JSON object with full records on all breeds in users updated favorites list.</td>
       </tr>
       <tr>
         <td>Allow users to remove breeds from their favorites list</td>
-        <td>/users/favorites/[breedID]</td>
+        <td>/users/favorites/[breedId]</td>
         <td>DELETE</td>
         <td>Header with authorized users JWT bearer token.</td>
-        <td>A JSON object with information on all breeds in users updated favorites list.</td>
+        <td>A JSON object with full records on all breeds in users updated favorites list.</td>
       </tr>
       <tr>
         <td>Allow user to delete their account</td>

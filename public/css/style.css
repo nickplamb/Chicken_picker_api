@@ -10,10 +10,13 @@ td {
 }
 .tab {
   margin-left: 20px;
+  display: block;
 }
 .tab2 {
   margin-left: 40px;
+  display: block;
 }
 .tab3 {
   margin-left: 60px;
+  display: block;
 }
