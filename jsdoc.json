@@ -1,0 +1,11 @@
+{
+  "plugins": ["plugins/markdown"],
+  "source": {
+    "include": ["./"],
+    "exclude": ["node_modules/", "public/", "extras/", ".vscode/", "out/"]
+  },
+  "opts": {
+    "recurse": true,
+    "readme": "./README.md"
+  }
+}
