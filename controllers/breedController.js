@@ -1,7 +1,22 @@
-// Models
+/**
+ * Breeds controller
+ * @module breedsController
+ */
+/**
+ * Breed model
+ * @const Breed
+ *
+ */
 const { Breed } = require('../models/Breed.js');
 
-// Get all chicken breeds
+/**
+ * Get all Breeds
+ * Sets response headers and JSON encodes all breeds from the DB into response body.
+ * @function
+ * @param {Object} req - The HTTP request
+ * @param {Object} res - The HTTP response
+ * @returns {void} (res is not returned but set.)
+ */
 exports.breed_get_all_breeds = function (req, res) {
   Breed.find()
     .then((breeds) => {
@@ -12,7 +27,15 @@ exports.breed_get_all_breeds = function (req, res) {
     });
 };
 
-// Get one breed by name
+/**
+ * Get one breed by name
+ * Sets response headers and JSON encodes single breed requested by breed name from DB into response body
+ * @function
+ * @param {Object} req - The HTTP request
+ * @param {string} req.params.breed Breed name from query string
+ * @param {Object} res - The HTTP response
+ * @returns {void} (res is not returned but set.)
+ */
 exports.breeds_get_breed_by_name = function (req, res) {
   Breed.findOne()
     .byBreed(req.params.breed)
@@ -28,7 +51,15 @@ exports.breeds_get_breed_by_name = function (req, res) {
     });
 };
 
-// Get all breeds by egg color
+/**
+ * get all breeds by egg color
+ * Sets response headers and JSON encodes all breeds by egg color from DB into response body
+ * @function
+ * @param {Object} req - The HTTP request
+ * @param {string} req.params.color Egg color from query string
+ * @param {Object} res - The HTTP response
+ * @returns {void} (res is not returned but set.)
+ */
 exports.breed_get_breeds_by_egg_color = function (req, res) {
   Breed.find()
     .byEggColor(req.params.color)
@@ -46,7 +77,15 @@ exports.breed_get_breeds_by_egg_color = function (req, res) {
     });
 };
 
-// Get all breeds of specified class
+/**
+ * get all breeds by APA class
+ * Sets response headers and JSON encodes all breeds by APA class name from DB into response body
+ * @function
+ * @param {Object} req - The HTTP request
+ * @param {string} req.params.class APA class name from query string
+ * @param {Object} res - The HTTP response
+ * @returns {void} (res is not returned but set.)
+ */
 exports.breed_get_breeds_by_class = function (req, res) {
   Breed.find()
     .byApaClass(req.params.class)

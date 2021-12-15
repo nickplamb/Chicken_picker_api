@@ -1,48 +1,39 @@
+/**
+ * User Controller module
+ * @module usersConstroller
+ * @requires Breed
+ * @requires User
+ * @requires express-validator
+ */
+
 // Models
 const { Breed } = require('../models/Breed.js');
 const { User } = require('../models/User.js');
 
-// Input validation rules
+// Validation
 const { check, validationResult } = require('express-validator');
-let newUserValidation = [
-  check('username', 'Username is required and must be at least 5 characters long').isLength({
-    min: 5,
-  }),
-  check('username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(),
-  check('password', 'Password is required and must be at least 10 characters long').isLength({
-    min: 10,
-  }),
-  check('email', 'Email does not appear to be valid').isEmail().normalizeEmail(),
-  check('birthday').optional().toDate(),
-];
-let updateUserValidation = [
-  check('username', 'Username is required and must be at least 5 characters long')
-    .isLength({ min: 5 })
-    .optional(),
-  check('username', 'Username contains non alphanumeric characters - not allowed')
-    .isAlphanumeric()
-    .optional(),
-  check('password', 'Password is required and must be at least 10 characters long')
-    .isLength({ min: 10 })
-    .optional(),
-  check('email', 'Email does not appear to be valid').isEmail().normalizeEmail().optional(),
-  check('birthday').optional().toDate().optional(),
-];
 
 // FOR DEV ONLY!
 // RETURNS ALL USERS
-exports.user_get_all = function (req, res) {
-  User.find()
-    .then((users) => {
-      return res.status(201).json(users);
-    })
-    .catch((err) => {
-      console.log(err);
-      return res.status(500).send(`something went wrong. Error: ${err}.`);
-    });
-};
+// exports.user_get_all = function (req, res) {
+//   User.find()
+//     .then((users) => {
+//       return res.status(201).json(users);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       return res.status(500).send(`something went wrong. Error: ${err}.`);
+//     });
+// };
 
-// Create new user
+/**
+ * Creates a new user
+ * Sets response headers and JSON encodes new user into response body
+ * @function
+ * @param {Object} req The HTTP request
+ * @param {Object} res The HTTP response
+ * @returns {void}
+ */
 exports.user_post_new_user = function (req, res) {
   // Validate user inputs
   let validationErrors = validationResult(req);
@@ -83,7 +74,15 @@ exports.user_post_new_user = function (req, res) {
     });
 };
 
-// Update existing user by _id in JWT token
+/**
+ * Updates an exists user
+ * Sets response headers and JSON encodes the new user data in response body
+ * @function
+ * @param {Object} req The HTTP request
+ * @param {string} req.user._id User ID decrypted from JWT token
+ * @param {Object} res The HTTP response
+ * @returns {void}
+ */
 exports.user_put_user_update = function (req, res) {
   let reqUser = req.body;
 
@@ -126,7 +125,15 @@ exports.user_put_user_update = function (req, res) {
     });
 };
 
-// Get list of users favorite breeds by _id in JWT token
+/**
+ * Sends list of users favorite breed ID's
+ * sets response headers and JSON encodes array of user favorite breed ID's into the response body
+ * @function
+ * @param {Object} req - The HTTP request
+ * @param {string} req.user._id User ID decrypted from JWT token
+ * @param {Object} res - The http response
+ * @returns {void}
+ */
 exports.user_get_favorites = function (req, res) {
   User.findById(req.user._id)
     .populate('favoriteBreeds')
@@ -143,7 +150,16 @@ exports.user_get_favorites = function (req, res) {
     });
 };
 
-// Add breed to users favorite list
+/**
+ * Adds a breed to the users favorites array
+ * Sets response headers and JSON encodes the updated array of user favorite breed ID's
+ * @function
+ * @param {Object} req - The HTTP request
+ * @param {string} req.user._id User ID decrypted from JWT token
+ * @param {string} req.params.breedId Breed ID from query string
+ * @param {Object} res - The http response
+ * @returns {void}
+ */
 exports.user_post_new_favorite = function (req, res) {
   // Find the User
   User.findById(req.user._id)
@@ -187,7 +203,16 @@ exports.user_post_new_favorite = function (req, res) {
     });
 };
 
-// Remove a breed from users favorite list
+/**
+ * Deletes a breed to the users favorites array
+ * Sets response headers and JSON encodes the updated array of user favorite breed ID's
+ * @function
+ * @param {Object} req - The HTTP request
+ * @param {string} req.user._id User ID decrypted from JWT token
+ * @param {string} req.params.breedId Breed ID from query string
+ * @param {Object} res - The http response
+ * @returns {void}
+ */
 exports.user_delete_user_favorite = function (req, res) {
   // Find the user.
   User.findById(req.user._id).then((user) => {
@@ -215,7 +240,14 @@ exports.user_delete_user_favorite = function (req, res) {
   });
 };
 
-// Delete the User account.
+/**
+ * Deletes a users records from the DB
+ * @function
+ * @param {Object} req - The HTTP request
+ * @param {string} req.user._id User ID decrypted from JWT token
+ * @param {Object} res - The http response
+ * @returns {void}
+ */
 exports.user_delete_account = function (req, res) {
   // Find the user.
   User.findByIdAndDelete(req.user._id)
@@ -231,3 +263,35 @@ exports.user_delete_account = function (req, res) {
       return res.status(500).send(`Error: ${err}`);
     });
 };
+
+/**
+ * New user validation rules
+ */
+exports.newUserValidation = [
+  check('username', 'Username is required and must be at least 5 characters long').isLength({
+    min: 5,
+  }),
+  check('username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(),
+  check('password', 'Password is required and must be at least 10 characters long').isLength({
+    min: 10,
+  }),
+  check('email', 'Email does not appear to be valid').isEmail().normalizeEmail(),
+  check('birthday').optional().toDate(),
+];
+
+/**
+ * Update user validation rules
+ */
+exports.updateUserValidation = [
+  check('username', 'Username is required and must be at least 5 characters long')
+    .isLength({ min: 5 })
+    .optional(),
+  check('username', 'Username contains non alphanumeric characters - not allowed')
+    .isAlphanumeric()
+    .optional(),
+  check('password', 'Password is required and must be at least 10 characters long')
+    .isLength({ min: 10 })
+    .optional(),
+  check('email', 'Email does not appear to be valid').isEmail().normalizeEmail().optional(),
+  check('birthday').optional().toDate().optional(),
+];
