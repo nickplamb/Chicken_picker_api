@@ -23,32 +23,38 @@ require('../config/passport');
  */
 const auth = passport.authenticate('jwt', { session: false });
 
-// const { check } = require('express-validator');
+const { check } = require('express-validator');
 // Input validation rules
-// const newUserValidation = [
-//   check('username', 'Username is required and must be at least 5 characters long').isLength({
-//     min: 5,
-//   }),
-//   check('username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(),
-//   check('password', 'Password is required and must be at least 10 characters long').isLength({
-//     min: 10,
-//   }),
-//   check('email', 'Email does not appear to be valid').isEmail().normalizeEmail(),
-//   check('birthday').optional().toDate(),
-// ];
-// const updateUserValidation = [
-//   check('username', 'Username is required and must be at least 5 characters long')
-//     .isLength({ min: 5 })
-//     .optional(),
-//   check('username', 'Username contains non alphanumeric characters - not allowed')
-//     .isAlphanumeric()
-//     .optional(),
-//   check('password', 'Password is required and must be at least 10 characters long')
-//     .isLength({ min: 10 })
-//     .optional(),
-//   check('email', 'Email does not appear to be valid').isEmail().normalizeEmail().optional(),
-//   check('birthday').optional().toDate().optional(),
-// ];
+/**
+ * New user validation rules
+ */
+const newUserValidation = [
+  check('username', 'Username is required and must be at least 5 characters long').isLength({
+    min: 5,
+  }),
+  check('username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(),
+  check('password', 'Password is required and must be at least 10 characters long').isLength({
+    min: 10,
+  }),
+  check('email', 'Email does not appear to be valid').isEmail().normalizeEmail(),
+  check('birthday').optional().toDate(),
+];
+/**
+ * Update user validation rules
+ */
+const updateUserValidation = [
+  check('username', 'Username is required and must be at least 5 characters long')
+    .isLength({ min: 5 })
+    .optional(),
+  check('username', 'Username contains non alphanumeric characters - not allowed')
+    .isAlphanumeric()
+    .optional(),
+  check('password', 'Password is required and must be at least 10 characters long')
+    .isLength({ min: 10 })
+    .optional(),
+  check('email', 'Email does not appear to be valid').isEmail().normalizeEmail().optional(),
+  check('birthday').optional().toDate().optional(),
+];
 
 // FOR DEV ONLY!
 // RETURNS ALL USERS
@@ -64,7 +70,7 @@ const auth = passport.authenticate('jwt', { session: false });
  * @param {Array} middleware - Validation rules for new user
  * @param {callback} middleware - User controller function
  */
-router.post('/', user_controller.newUserValidation, user_controller.user_post_new_user);
+router.post('/', newUserValidation, user_controller.user_post_new_user);
 
 // Update existing user by _id in JWT token
 /**
@@ -77,7 +83,7 @@ router.post('/', user_controller.newUserValidation, user_controller.user_post_ne
  * @param {Array} middleware - Validation rules for updating user data
  * @param {callback} middleware - User controller function
  */
-router.put('/', auth, user_controller.updateUserValidation, user_controller.user_put_user_update);
+router.put('/', auth, updateUserValidation, user_controller.user_put_user_update);
 
 // Get list of users favorite breeds by _id in JWT token
 /**
