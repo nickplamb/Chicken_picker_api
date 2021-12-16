@@ -32,6 +32,7 @@ let allowedOrigins = ['*', 'http://localhost:8080', 'http://localhost:1234'];
 // Middleware
 app.use(morgan('common'));
 app.use(express.static('public'));
+app.use('/docs', express.static('out'));
 app.use(express.json());
 
 // CORS handling

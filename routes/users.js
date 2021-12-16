@@ -23,39 +23,6 @@ require('../config/passport');
  */
 const auth = passport.authenticate('jwt', { session: false });
 
-// const { check } = require('express-validator');
-// // Input validation rules
-// /**
-//  * New user validation rules
-//  */
-// const newUserValidation = [
-//   check('username', 'Username is required and must be at least 5 characters long').isLength({
-//     min: 5,
-//   }),
-//   check('username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(),
-//   check('password', 'Password is required and must be at least 10 characters long').isLength({
-//     min: 10,
-//   }),
-//   check('email', 'Email does not appear to be valid').isEmail().normalizeEmail(),
-//   check('birthday').optional().toDate(),
-// ];
-// /**
-//  * Update user validation rules
-//  */
-// const updateUserValidation = [
-//   check('username', 'Username is required and must be at least 5 characters long')
-//     .isLength({ min: 5 })
-//     .optional(),
-//   check('username', 'Username contains non alphanumeric characters - not allowed')
-//     .isAlphanumeric()
-//     .optional(),
-//   check('password', 'Password is required and must be at least 10 characters long')
-//     .isLength({ min: 10 })
-//     .optional(),
-//   check('email', 'Email does not appear to be valid').isEmail().normalizeEmail().optional(),
-//   check('birthday').optional().toDate().optional(),
-// ];
-
 // FOR DEV ONLY!
 // RETURNS ALL USERS
 // router.get('/', auth, user_controller.user_get_all);
