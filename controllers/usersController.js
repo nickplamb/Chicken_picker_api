@@ -86,6 +86,13 @@ exports.user_post_new_user = function (req, res) {
 exports.user_put_user_update = function (req, res) {
   let reqUser = req.body;
 
+  // Validate user inputs
+  let validationErrors = validationResult(req);
+
+  if (!validationErrors.isEmpty()) {
+    return res.status(422).json({ errors: validationErrors.array() });
+  }
+
   //Find user by username decrypted from JWT token
   User.findById(req.user._id)
     .then((user) => {
@@ -264,34 +271,34 @@ exports.user_delete_account = function (req, res) {
     });
 };
 
-// /**
-//  * New user validation rules
-//  */
-// exports.newUserValidation = [
-//   check('username', 'Username is required and must be at least 5 characters long').isLength({
-//     min: 5,
-//   }),
-//   check('username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(),
-//   check('password', 'Password is required and must be at least 10 characters long').isLength({
-//     min: 10,
-//   }),
-//   check('email', 'Email does not appear to be valid').isEmail().normalizeEmail(),
-//   check('birthday').optional().toDate(),
-// ];
+/**
+ * New user validation rules
+ */
+exports.newUserValidation = [
+  check('username', 'Username is required and must be at least 5 characters long').isLength({
+    min: 5,
+  }),
+  check('username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(),
+  check('password', 'Password is required and must be at least 10 characters long').isLength({
+    min: 10,
+  }),
+  check('email', 'Email does not appear to be valid').isEmail().normalizeEmail(),
+  check('birthday').optional().toDate(),
+];
 
-// /**
-//  * Update user validation rules
-//  */
-// exports.updateUserValidation = [
-//   check('username', 'Username is required and must be at least 5 characters long')
-//     .isLength({ min: 5 })
-//     .optional(),
-//   check('username', 'Username contains non alphanumeric characters - not allowed')
-//     .isAlphanumeric()
-//     .optional(),
-//   check('password', 'Password is required and must be at least 10 characters long')
-//     .isLength({ min: 10 })
-//     .optional(),
-//   check('email', 'Email does not appear to be valid').isEmail().normalizeEmail().optional(),
-//   check('birthday').optional().toDate().optional(),
-// ];
+/**
+ * Update user validation rules
+ */
+exports.updateUserValidation = [
+  check('username', 'Username is required and must be at least 5 characters long')
+    .isLength({ min: 5 })
+    .optional(),
+  check('username', 'Username contains non alphanumeric characters - not allowed')
+    .isAlphanumeric()
+    .optional(),
+  check('password', 'Password is required and must be at least 10 characters long')
+    .isLength({ min: 10 })
+    .optional(),
+  check('email', 'Email does not appear to be valid').isEmail().normalizeEmail().optional(),
+  check('birthday').optional().toDate().optional(),
+];
